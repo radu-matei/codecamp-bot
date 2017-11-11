@@ -48,7 +48,7 @@ bot.dialog('Deploy', function (session) {
     var options = {
         host: 'go-client',
         port: 80,
-        path: '/get/cluster'
+        path: '/create'
     };
 
     var body = "";
