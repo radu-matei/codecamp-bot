@@ -142,7 +142,7 @@ func CreateDeployment() string {
 
 	result, err := deploymentsClient.Create(deployment)
 	if err != nil {
-		panic(err)
+		fmt.Printf("%v", err)
 	}
 	fmt.Printf("Created deployment %q.\n", result.GetObjectMeta().GetName())
 
@@ -150,45 +150,17 @@ func CreateDeployment() string {
 }
 
 func UpdateDeployment() string {
-
 	deploymentsClient := clientSet.AppsV1beta1().Deployments(v1.NamespaceDefault)
 
-	deployment := &appsv1beta1.Deployment{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: "codecamp-go",
-		},
-		Spec: appsv1beta1.DeploymentSpec{
-			Replicas: int32Ptr(5),
-			Template: v1.PodTemplateSpec{
-				ObjectMeta: metav1.ObjectMeta{
-					Labels: map[string]string{
-						"app": "demo",
-					},
-				},
-				Spec: v1.PodSpec{
-					Containers: []v1.Container{
-						{
-							Name:  "codecamp-go",
-							Image: "radumatei/codecamp-go:v2",
-							Ports: []v1.ContainerPort{
-								{
-									Name:          "http",
-									Protocol:      v1.ProtocolTCP,
-									ContainerPort: 80,
-								},
-							},
-						},
-					},
-				},
-			},
-		},
+	result, getErr := deploymentsClient.Get("codecamp-go", metav1.GetOptions{})
+	if getErr != nil {
+		panic(fmt.Errorf("Failed to get latest version of Deployment: %v", getErr))
 	}
 
-	result, err := deploymentsClient.Update(deployment)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Created deployment %q.\n", result.GetObjectMeta().GetName())
+	result.Spec.Template.Spec.Containers[0].Image = "radumatei/codecamp-go:v2" // change nginx version
+	deploymentsClient.Update(result)
+
+	fmt.Println("Updated deployment...")
 
 	return "Updated your deployment!"
 }

@@ -25,5 +25,5 @@ func createDeployment(writer http.ResponseWriter, request *http.Request) {
 }
 
 func updateDeployment(writer http.ResponseWriter, request *http.Request) {
-	io.WriteString(writer, CreateDeployment())
+	io.WriteString(writer, UpdateDeployment())
 }
