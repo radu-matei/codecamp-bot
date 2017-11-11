@@ -64,7 +64,7 @@ func GetNamespaces() (string, error) {
 // GetClusterInformation return generic information about the cluster
 func GetClusterInformation() string {
 
-	var responseString = "Hi, there, here is some information about your cluster: "
+	var responseString = "Here is some information about your cluster: "
 
 	namespaces, err := clientSet.CoreV1().Namespaces().List(metav1.ListOptions{})
 	if err != nil {
@@ -124,8 +124,8 @@ func CreateDeployment() string {
 				Spec: v1.PodSpec{
 					Containers: []v1.Container{
 						{
-							Name:  "azure-summerschool",
-							Image: "radumatei/azure-summerschool",
+							Name:  "codecamp-go",
+							Image: "radumatei/codecamp-go",
 							Ports: []v1.ContainerPort{
 								{
 									Name:          "http",
@@ -146,7 +146,7 @@ func CreateDeployment() string {
 	}
 	fmt.Printf("Created deployment %q.\n", result.GetObjectMeta().GetName())
 
-	return "Created deployment! Check the public IP!"
+	return "Created your deployment!"
 }
 
 func int32Ptr(i int32) *int32 { return &i }

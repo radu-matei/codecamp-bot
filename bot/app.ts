@@ -45,8 +45,22 @@ bot.dialog('GetInformation', function (session) {
 });
 
 bot.dialog('Deploy', function (session) {
-    session.say('Deploying your app...',
-        'Deploying your app...');
+    var options = {
+        host: 'go-client',
+        port: 80,
+        path: '/get/cluster'
+    };
+
+    var body = "";
+    http.get(options, response => {
+        response.on('data', data => {
+            body += data
+        });
+        response.on('end', ()=> {
+            session.say(body, body)     
+        })
+    })
+
 }).triggerAction({
     matches: 'Deploy'
 });
