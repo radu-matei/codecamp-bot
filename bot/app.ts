@@ -31,7 +31,7 @@ bot.dialog('GetInformation', function (session) {
         path: '/get/cluster'
     };
 
-    var body = "Hello CodeCamp!";
+    var body = "Hello, Cluj! I really hope this does not fail!";
     http.get(options, response => {
         response.on('data', data => {
             body += data
@@ -63,4 +63,26 @@ bot.dialog('Deploy', function (session) {
 
 }).triggerAction({
     matches: 'Deploy'
+});
+
+
+bot.dialog('Update', function (session) {
+    var options = {
+        host: 'go-client',
+        port: 80,
+        path: '/update'
+    };
+
+    var body = "I am updating the application.";
+    http.get(options, response => {
+        response.on('data', data => {
+            body += data
+        });
+        response.on('end', ()=> {
+            session.say(body, body)     
+        })
+    })
+
+}).triggerAction({
+    matches: 'Update'
 });
