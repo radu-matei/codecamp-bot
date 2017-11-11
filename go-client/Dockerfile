@@ -1,4 +1,4 @@
-FROM radumatei/k8s-client-builder:latest as builder
+FROM draftaccount/k8s-client-builder:latest as builder
 
 WORKDIR /go/src/github.com/radu-matei/kube-bot-client
 
