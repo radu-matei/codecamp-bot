@@ -10,25 +10,6 @@ podTemplate(label: 'mypod', containers: [
 
         checkout scm
 
-        stage('build and push the k8s client') {
-            container('docker') {
-
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', 
-                        credentialsId: 'dockerhub',
-                        usernameVariable: 'DOCKER_HUB_USER', 
-                        passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
-                    
-                    sh """
-                        cd go-client
-                        docker build -t ${env.DOCKER_HUB_USER}/codecamp-client:${env.BUILD_NUMBER} .
-                        """
-                    sh "docker login -u ${env.DOCKER_HUB_USER} -p ${env.DOCKER_HUB_PASSWORD} "
-                    sh "docker push ${env.DOCKER_HUB_USER}/codecamp-client:${env.BUILD_NUMBER} "
-                }
-            }
-        }
-
-
         stage('build and push the bot image') {
             container('docker') {
 
@@ -56,7 +37,6 @@ podTemplate(label: 'mypod', containers: [
                         usernameVariable: 'DOCKER_HUB_USER',
                         passwordVariable: 'DOCKER_HUB_PASSWORD']]) {
 
-                    sh "kubectl set image deployment/go-client go-client=${env.DOCKER_HUB_USER}/codecamp-client:${env.BUILD_NUMBER} "
                     sh "kubectl set image deployment/bot-deployment bot-deployment=${env.DOCKER_HUB_USER}/codecamp-bot:${env.BUILD_NUMBER} "
                 }
             }
