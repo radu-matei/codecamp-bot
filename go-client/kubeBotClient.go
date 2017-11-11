@@ -111,10 +111,10 @@ func CreateDeployment() string {
 
 	deployment := &appsv1beta1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "azure-summerschool",
+			Name: "codecamp-go",
 		},
 		Spec: appsv1beta1.DeploymentSpec{
-			Replicas: int32Ptr(2),
+			Replicas: int32Ptr(5),
 			Template: v1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
@@ -125,7 +125,7 @@ func CreateDeployment() string {
 					Containers: []v1.Container{
 						{
 							Name:  "codecamp-go",
-							Image: "radumatei/codecamp-go",
+							Image: "radumatei/codecamp-go:2",
 							Ports: []v1.ContainerPort{
 								{
 									Name:          "http",
@@ -147,6 +147,50 @@ func CreateDeployment() string {
 	fmt.Printf("Created deployment %q.\n", result.GetObjectMeta().GetName())
 
 	return "Created your deployment!"
+}
+
+func UpdateDeployment() string {
+
+	deploymentsClient := clientSet.AppsV1beta1().Deployments(v1.NamespaceDefault)
+
+	deployment := &appsv1beta1.Deployment{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "codecamp-go",
+		},
+		Spec: appsv1beta1.DeploymentSpec{
+			Replicas: int32Ptr(5),
+			Template: v1.PodTemplateSpec{
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"app": "demo",
+					},
+				},
+				Spec: v1.PodSpec{
+					Containers: []v1.Container{
+						{
+							Name:  "codecamp-go",
+							Image: "radumatei/codecamp-go:v2",
+							Ports: []v1.ContainerPort{
+								{
+									Name:          "http",
+									Protocol:      v1.ProtocolTCP,
+									ContainerPort: 80,
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	result, err := deploymentsClient.Update(deployment)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Created deployment %q.\n", result.GetObjectMeta().GetName())
+
+	return "Updated your deployment!"
 }
 
 func int32Ptr(i int32) *int32 { return &i }
