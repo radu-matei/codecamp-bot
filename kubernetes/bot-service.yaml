@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: bot-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: bot-deployment
+    spec:
+      containers:
+      - name: bot-deployment
+        image: radumatei/codecamp-bot:1
+        ports:
+            - containerPort: 3978
+        env:
+        - name: LUIS_URI
+          valueFrom:
+            secretKeyRef:
+              name: luis-url
+              key: luis-url
+        - name: MICROSOFT_APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: microsoft-bot-secret
+              key: appid
+        - name: MICROSOFT_APP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: microsoft-bot-secret
+              key: apppassword
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bot-service
+spec:
+  selector:
+    app: bot-deployment
+  ports:
+  - protocol: TCP
+    port: 3978
+    targetPort: 3978
+  type: LoadBalancer

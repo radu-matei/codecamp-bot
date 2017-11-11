@@ -1,0 +1,11 @@
+{
+    "name": "kube-bot",
+    "dependencies": {
+        "botbuilder": "^3.8.4",
+        "restify": "^4.3.0"
+    },
+    "devDependencies": {
+        "@types/node": "^6.0.52",
+        "@types/restify": "^2.0.35"
+    }
+}
