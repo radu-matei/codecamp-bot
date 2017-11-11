@@ -31,7 +31,7 @@ bot.dialog('GetInformation', function (session) {
         path: '/get/cluster'
     };
 
-    var body = "";
+    var body = "Hello CodeCamp!";
     http.get(options, response => {
         response.on('data', data => {
             body += data
