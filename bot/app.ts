@@ -31,7 +31,7 @@ bot.dialog('GetInformation', function (session) {
         path: '/get/cluster'
     };
 
-    var body = "";
+    var body = "Hi, Sofia!";
     http.get(options, response => {
         response.on('data', data => {
             body += data
@@ -73,7 +73,7 @@ bot.dialog('Update', function (session) {
         path: '/update'
     };
 
-    var body = "I am updating the application.";
+    var body = "I am updating the application. ";
     http.get(options, response => {
         response.on('data', data => {
             body += data
