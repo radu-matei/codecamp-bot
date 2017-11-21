@@ -31,7 +31,7 @@ bot.dialog('GetInformation', function (session) {
         path: '/get/cluster'
     };
 
-    var body = "Hello, Azure Max! Let's see if this works!";
+    var body = "Hello, Azure Max! Let's see if it works!";
     http.get(options, response => {
         response.on('data', data => {
             body += data
@@ -43,9 +43,9 @@ bot.dialog('GetInformation', function (session) {
 }).triggerAction({
     matches: 'GetInformation'
 });
-    var options = {
 
 bot.dialog('Deploy', function (session) {
+    var options = {
         host: 'go-client',
         port: 80,
         path: '/create'
