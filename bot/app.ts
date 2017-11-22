@@ -31,7 +31,7 @@ bot.dialog('GetInformation', function (session) {
         path: '/get/cluster'
     };
 
-    var body = "Hello, Azure Max! Let's see if it works!";
+    var body = "";
     http.get(options, response => {
         response.on('data', data => {
             body += data

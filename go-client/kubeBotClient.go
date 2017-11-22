@@ -111,7 +111,7 @@ func CreateDeployment() string {
 
 	deployment := &appsv1beta1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "azuremax",
+			Name: "voxxed",
 		},
 		Spec: appsv1beta1.DeploymentSpec{
 			Replicas: int32Ptr(5),
@@ -124,8 +124,8 @@ func CreateDeployment() string {
 				Spec: v1.PodSpec{
 					Containers: []v1.Container{
 						{
-							Name:  "azuremax",
-							Image: "radumatei/azuremax",
+							Name:  "voxxed",
+							Image: "radumatei/voxxed-go",
 							Ports: []v1.ContainerPort{
 								{
 									Name:          "http",
@@ -152,12 +152,12 @@ func CreateDeployment() string {
 func UpdateDeployment() string {
 	deploymentsClient := clientSet.AppsV1beta1().Deployments(v1.NamespaceDefault)
 
-	result, getErr := deploymentsClient.Get("azuremax", metav1.GetOptions{})
+	result, getErr := deploymentsClient.Get("voxxed", metav1.GetOptions{})
 	if getErr != nil {
 		panic(fmt.Errorf("Failed to get latest version of Deployment: %v", getErr))
 	}
 
-	result.Spec.Template.Spec.Containers[0].Image = "radumatei/azuremax:v2"
+	result.Spec.Template.Spec.Containers[0].Image = "radumatei/voxxed-go:v2"
 	deploymentsClient.Update(result)
 
 	fmt.Println("Updated deployment...")
